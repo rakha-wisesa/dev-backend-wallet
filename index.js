@@ -1,9 +1,18 @@
+/*
+    =============== Messy Code =====================
+    =============== Just for reviewing, NOT PRODUCTION =======================
+ */
+
 const ApiBuilder = require('claudia-api-builder');
 const Web3 = require('web3');
 
 const api = new ApiBuilder();
-// const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
-const web3 = new Web3(Web3.givenProvider);
+const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
+// const web3 = new Web3(Web3.givenProvider);
+// const provider = "https://rinkeby.infura.io/v3/215592e0e4724a359039bcb9702971e9";
+// const web3Provider = new Web3.providers.HttpProvider(provider);
+// const web3 = new Web3(web3Provider);
+// const web3 = new Web3("https://rinkeby.infura.io/v3/215592e0e4724a359039bcb9702971e9");
 
 module.exports = api;
 
@@ -95,21 +104,34 @@ api.get('/wallet/get-balance', async (request) => {
 /* ======================== Transaction ============================== */
 
 api.post('/wallet/send-signed-transaction', async (request) => {
-    const accountAddress = String(request.body.accountAddress);
     const recipientAddress = String(request.body.recipientAddress);
+    // const from = String(request.body.accountAddress);
     const accountKey = String(request.body.accountKey);
-    const gasPrice = web3.eth.getGasPrice();
     const gas = String(request.body.gas);
-    const valueTxn = String(web3.utils.toWei("1", "ether"));
-
+    const valueTxn = String(web3.utils.toWei(String(request.body.value), "ether"));
     const signed = await web3.eth.accounts.signTransaction({
+        // from: from,
         to: recipientAddress,
         value: valueTxn,
-        gas: 200000
+        gas: gas,
     }, accountKey);
+    // const signed = await web3.eth.signTransaction({
+    //     from: from,
+    //     to: recipientAddress,
+    //     value: valueTxn,
+    //     gas: gas,
+    // });
     const rawTx = signed.rawTransaction;
     const statusSending = await web3.eth.sendSignedTransaction(rawTx);
     return statusSending;
+    // try{
+        
+    // }catch(error){
+    //     return {
+    //         "status": "Error",
+    //         "error_message": error,
+    //     }
+    // }
 });
 
 
