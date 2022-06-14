@@ -7,12 +7,12 @@ const ApiBuilder = require('claudia-api-builder');
 const Web3 = require('web3');
 
 const api = new ApiBuilder();
-const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
+// const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:7545");
 // const web3 = new Web3(Web3.givenProvider);
 // const provider = "https://rinkeby.infura.io/v3/215592e0e4724a359039bcb9702971e9";
 // const web3Provider = new Web3.providers.HttpProvider(provider);
 // const web3 = new Web3(web3Provider);
-// const web3 = new Web3("https://rinkeby.infura.io/v3/215592e0e4724a359039bcb9702971e9");
+const web3 = new Web3("https://rinkeby.infura.io/v3/215592e0e4724a359039bcb9702971e9");
 
 module.exports = api;
 
